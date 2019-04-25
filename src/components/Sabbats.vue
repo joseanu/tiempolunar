@@ -27,6 +27,16 @@
       :largo="ancho"
       :angulo="item.angulo"
     ></linea-rotada>
+    <use
+      xlink:href="#marcador"
+      v-for="item in imbolc"
+      width="100%"
+      height="100%"
+      :key="item.angulo"
+      :x="cX"
+      :y="cY - dentro - (ancho / 2)"
+      :transform="rotaAngulo(item.angulo) + ''"
+    />
   </g>
 </template>
 
@@ -44,6 +54,7 @@ export default {
   data() {
     return {
       estaciones: [],
+      sabbatsMenores: store.sabbatsMenores,
       cX: store.cX(),
       cY: store.cY(),
       ancho: (store.radios.sabbats.ancho * store.dim.ancho) / 2,
@@ -81,9 +92,28 @@ export default {
         return nuevo;
       }, []);
     },
+    imbolc() {
+      return d3.timeDay
+        .range(this.fechaInicio, this.fechaFin)
+        .reduce((nuevo, item) => {
+          if (
+            this.sabbatsMenores.indexOf(
+              JSON.stringify([item.getDate(), item.getMonth()]),
+            ) > -1
+          ) {
+            const angulo = this.escala(item.getTime());
+            if (0 <= angulo && angulo < 360) {
+              nuevo.push({
+                angulo,
+              });
+            }
+          }
+          return nuevo;
+        }, []);
+    },
   },
   watch: {
-    luna(val) {
+    luna() {
       this.getEstaciones();
     },
   },
@@ -95,11 +125,11 @@ export default {
       const vm = this;
       const estaciones = Parse.Object.extend('estaciones');
       const query = new Parse.Query(estaciones);
-      query.greaterThanOrEqualTo('timestamp', this.fechaInicio.getTime());
-      query.lessThanOrEqualTo('timestamp', this.fechaFin.getTime());
+      query.greaterThanOrEqualTo('timestamp', vm.fechaInicio.getTime());
+      query.lessThanOrEqualTo('timestamp', vm.fechaFin.getTime());
       query.ascending('timestamp');
       const results = await query.find();
-      this.estaciones = results.map(obj => {
+      vm.estaciones = results.map(obj => {
         return {
           timestamp: new Date(obj.get('timestamp')),
           estacion: obj.get('estacion'),
