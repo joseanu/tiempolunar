@@ -44,12 +44,7 @@
         <label for="litha">🔥</label>
         <input type="radio" id="mabon" value="8" v-model.number="principio" />
         <label for="mabon">🍂</label>
-        <input
-          type="radio"
-          id="yule"
-          value="11"
-          v-model.number="principio"
-        />
+        <input type="radio" id="yule" value="11" v-model.number="principio" />
         <label for="yule">❄️</label>
       </p>
       <p>
@@ -312,7 +307,6 @@
       return {
         luna: 1,
         principio: 11,
-        fechaCero: new Date(2018, 11, 21),
         direccion: 1,
         orientacion: 0,
         signos: [],
@@ -335,6 +329,9 @@
       };
     },
     computed: {
+      fechaCero() {
+        return new Date(2018, parseInt(this.principio), 21);
+      },
       fechaInicio() {
         return d3.timeYear.offset(this.fechaCero, this.luna - 1);
       },
@@ -512,6 +509,11 @@
     },
     watch: {
       luna(val) {
+        this.getSignos();
+        this.getFases();
+        this.getEstaciones();
+      },
+      principio(val) {
         this.getSignos();
         this.getFases();
         this.getEstaciones();
