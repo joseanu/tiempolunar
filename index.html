@@ -10,9 +10,19 @@
     <div>
       <p>
         <input type="radio" id="derecha" value="1" v-model="direccion" />
-        <label for="derecha">⇨</label>
+        <label for="derecha">⟳</label>
         <input type="radio" id="izquierda" value="-1" v-model="direccion" />
-        <label for="izquierda">⇦</label>
+        <label for="izquierda">⟲</label>
+      </p>
+      <p>
+        <input type="radio" id="norte" value="0" v-model="orientacion" />
+        <label for="norte">↑</label>
+        <input type="radio" id="este" value="90" v-model="orientacion" />
+        <label for="este">→</label>
+        <input type="radio" id="sur" value="180" v-model="orientacion" />
+        <label for="sup">↓</label>
+        <input type="radio" id="oeste" value="270" v-model="orientacion" />
+        <label for="oeste">←</label>
       </p>
       <p><input type="range" min="1" max="33" step="1" v-model="luna" />{{ luna }}</p>
     </div>
@@ -198,6 +208,7 @@
         luna: 1,
         fechaCero: new Date(2018, 11, 21),
         direccion: 1,
+        orientacion: 0,
         signos: [],
         fases: [],
         estaciones: [],
@@ -389,13 +400,13 @@
     },
     methods: {
       rotaLinea(n) {
-        return `rotate(${(n - 1) * (360 / this.dias) * this.direccion} ${this.cX} ${this.cY})`;
+        return `rotate(${(n - 1) * (360 / this.dias) * this.direccion + this.orientacion} ${this.cX} ${this.cY})`;
       },
       rotaTexto(n) {
-        return `rotate(${(n - 0.5) * (360 / this.dias) * this.direccion} ${this.cX} ${this.cY})`;
+        return `rotate(${(n - 0.5) * (360 / this.dias) * this.direccion + this.orientacion} ${this.cX} ${this.cY})`;
       },
       rotaAngulo(angulo) {
-        return `rotate(${angulo * this.direccion} ${this.cX} ${this.cY})`;
+        return `rotate(${angulo * this.direccion + this.orientacion} ${this.cX} ${this.cY})`;
       },
       getFecha(n) {
         const fecha = d3.timeDay.offset(
