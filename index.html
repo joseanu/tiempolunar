@@ -2,75 +2,7 @@
 
 <head>
   <meta charset="utf-8">
-
-  <script src="https://d3js.org/d3.v5.js"></script>
-  <script src="https://unpkg.com/parse@2.1.0/dist/parse.js"></script>
-  <script src="https://unpkg.com/vue@next"></script>
-
-  <style>
-    @font-face {
-      font-family: "color-emoji";
-      src: local("Apple Color Emoji"),
-        local("Segoe UI Emoji"),
-        local("Segoe UI Symbol"),
-        local("Noto Color Emoji");
-    }
-
-    svg {
-      display: block;
-    }
-
-    .circulo {
-      fill: none;
-      stroke: black;
-      stroke-width: 1;
-    }
-
-    .circulo2 {
-      fill: none;
-      stroke: black;
-      stroke-width: 2;
-    }
-
-    .linea {
-      fill: none;
-      stroke: black;
-    }
-
-    .linea2 {
-      fill: none;
-      stroke: black;
-      stroke-width: 2;
-    }
-
-    .linea-hoy {
-      fill: none;
-      stroke: red;
-      stroke-width: 3;
-    }
-
-    text {
-      text-anchor: middle;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    }
-
-    .numeros {
-      font-size: 14px;
-    }
-
-    .fases {
-      font-size: 36px;
-      font-family: "color-emoji";
-    }
-
-    .signos {
-      font-size: 48px;
-    }
-
-    .ingrePlanetas {
-      font-size: 12px;
-    }
-  </style>
+  <link href="main.css" rel="stylesheet">
 </head>
 
 <div id="app">
@@ -133,10 +65,12 @@
 
 </div>
 
+<script src="https://d3js.org/d3.v5.js"></script>
+<script src="https://unpkg.com/parse@2.1.0/dist/parse.js"></script>
+<script src="https://unpkg.com/vue@next"></script>
+
 <script>
-  /*
-  
-  */
+
   Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
   Parse.initialize(
     'U3qVQ5eByTF3SMvNlu73kNeEH85zYhjzD1Vwfc6Y', // This is your Application ID
@@ -190,18 +124,18 @@
   d3.timeFormatDefaultLocale(locale);
 
   const charSignos = {
-    ar: '\u2648\uFE0E',
-    ta: '\u2649\uFE0E',
-    ge: '\u264A\uFE0E',
-    ca: '\u264B\uFE0E',
-    le: '\u264C\uFE0E',
-    vi: '\u264D\uFE0E',
-    li: '\u264E\uFE0E',
-    es: '\u264F\uFE0E',
-    sa: '\u2650\uFE0E',
-    cp: '\u2651\uFE0E',
-    ac: '\u2652\uFE0E',
-    pi: '\u2653\uFE0E',
+    ar: '♈︎',
+    ta: '♉︎',
+    ge: '♊︎',
+    ca: '♋︎',
+    le: '♌︎',
+    vi: '♍︎',
+    li: '♎︎',
+    es: '♏︎',
+    sa: '♐︎',
+    cp: '♑︎',
+    ac: '♒︎',
+    pi: '♓︎',
   };
 
   const charPlanetas = {

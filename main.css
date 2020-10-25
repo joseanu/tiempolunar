@@ -1,0 +1,62 @@
+@font-face {
+    font-family: "color-emoji";
+    src: local("Apple Color Emoji"),
+      local("Segoe UI Emoji"),
+      local("Segoe UI Symbol"),
+      local("Noto Color Emoji");
+  }
+
+  svg {
+    display: block;
+  }
+
+  .circulo {
+    fill: none;
+    stroke: black;
+    stroke-width: 1;
+  }
+
+  .circulo2 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+  }
+
+  .linea {
+    fill: none;
+    stroke: black;
+  }
+
+  .linea2 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+  }
+
+  .linea-hoy {
+    fill: none;
+    stroke: red;
+    stroke-width: 3;
+  }
+
+  text {
+    text-anchor: middle;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+
+  .numeros {
+    font-size: 14px;
+  }
+
+  .fases {
+    font-size: 36px;
+    font-family: "color-emoji";
+  }
+
+  .signos {
+    font-size: 48px;
+  }
+
+  .ingrePlanetas {
+    font-size: 12px;
+  }
