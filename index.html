@@ -1,48 +1,88 @@
 <!DOCTYPE html>
 
 <head>
-  <meta charset="utf-8">
-  <link href="main.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <link href="main.css" rel="stylesheet" />
 </head>
 
 <div id="app">
   <div>
     <div>
       <p>
-        <input type="radio" id="derecha" value="1" v-model="direccion" />
+        dirección:<br />
+        <input type="radio" id="derecha" value="1" v-model.number="direccion" />
         <label for="derecha">⟳</label>
-        <input type="radio" id="izquierda" value="-1" v-model="direccion" />
+        <input
+          type="radio"
+          id="izquierda"
+          value="-1"
+          v-model.number="direccion"
+        />
         <label for="izquierda">⟲</label>
       </p>
       <p>
-        <input type="radio" id="norte" value="0" v-model="orientacion" />
+        orientación:<br />
+        <input type="radio" id="norte" value="0" v-model.number="orientacion" />
         <label for="norte">↑</label>
-        <input type="radio" id="este" value="90" v-model="orientacion" />
+        <input type="radio" id="este" value="90" v-model.number="orientacion" />
         <label for="este">→</label>
-        <input type="radio" id="sur" value="180" v-model="orientacion" />
-        <label for="sup">↓</label>
-        <input type="radio" id="oeste" value="270" v-model="orientacion" />
+        <input type="radio" id="sur" value="180" v-model.number="orientacion" />
+        <label for="sur">↓</label>
+        <input
+          type="radio"
+          id="oeste"
+          value="270"
+          v-model.number="orientacion"
+        />
         <label for="oeste">←</label>
       </p>
-      <p><input type="range" min="1" max="33" step="1" v-model="luna" />{{ luna }}</p>
+      <p>
+        principio:<br />
+        <input type="radio" id="ostara" value="2" v-model.number="principio" />
+        <label for="ostara">🐇</label>
+        <input type="radio" id="litha" value="5" v-model.number="principio" />
+        <label for="litha">🔥</label>
+        <input type="radio" id="mabon" value="8" v-model.number="principio" />
+        <label for="mabon">🍂</label>
+        <input
+          type="radio"
+          id="yule"
+          value="11"
+          v-model.number="principio"
+        />
+        <label for="yule">❄️</label>
+      </p>
+      <p>
+        año inicial:<br />
+        <input type="range" min="1" max="33" step="1" v-model="luna" />
+        {{ parseInt(luna) + 2017 }}
+      </p>
     </div>
     <div>
       <p>{{ this.fechaInicio }}</p>
       <p>{{ this.fechaFin }}</p>
       <p>{{ this.dias }}</p>
     </div>
-
   </div>
   <div>
-    <svg :width="dim.ancho / 2" :height="dim.alto / 2" viewBox="0 0 1285 1285" xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink">
-
+    <svg
+      :width="dim.ancho / 2"
+      :height="dim.alto / 2"
+      viewBox="0 0 1285 1285"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+    >
       <defs>
         <path id="curvaFechas" :d="curvaFechas" />
       </defs>
       <g>
         <g>
-          <circle class="circulo2" :cx="cX" :cy="cY" :r="radioExterno + dim.borde" />
+          <circle
+            class="circulo2"
+            :cx="cX"
+            :cy="cY"
+            :r="radioExterno + dim.borde"
+          />
           <circle class="circulo2" :cx="cX" :cy="cY" :r="radioExterno" />
           <circle class="circulo2" :cx="cX" :cy="cY" :r="radioSignos" />
           <circle class="circulo" :cx="cX" :cy="cY" :r="radioPlanetas" />
@@ -50,38 +90,104 @@
           <circle class="circulo2" :cx="cX" :cy="cY" :r="radioLunas" />
         </g>
         <g>
-          <line v-for="item in yule" class="linea2" :x1="cX" :y1="cY" :x2="cX" :y2="0"
-            :transform="rotaAngulo(item.angulo)" />
+          <line
+            v-for="item in yule"
+            class="linea2"
+            :x1="cX"
+            :y1="cY"
+            :x2="cX"
+            :y2="0"
+            :transform="rotaAngulo(item.angulo)"
+          />
         </g>
         <g>
-          <line v-for="item in ingresos" class="linea" :x1="cX" :y1="cY - radioSignos" :x2="cX" :y2="cY - radioExterno"
-            :transform="rotaAngulo(item.angulo)" />
-          <text v-for="item in ingreSignos" class="signos" :x="cX"
-            :y="cY - radioSignos - (radioExterno - radioSignos) / 2" :transform="rotaAngulo(item.angulo)">
+          <line
+            v-for="item in ingresos"
+            class="linea"
+            :x1="cX"
+            :y1="cY - radioSignos"
+            :x2="cX"
+            :y2="cY - radioExterno"
+            :transform="rotaAngulo(item.angulo)"
+          />
+          <text
+            v-for="item in ingreSignos"
+            class="signos"
+            :x="cX"
+            :y="cY - radioSignos - (radioExterno - radioSignos) / 2"
+            :transform="rotaAngulo(item.angulo)"
+          >
             {{ item.signo }}
           </text>
         </g>
         <g>
-          <line v-for="n in dias" class="linea" :x1="cX" :y1="cY - radioPlanetas" :x2="cX" :y2="cY - radioSignos + 15"
-            :transform="rotaLinea(n)" />
+          <line
+            v-for="n in dias"
+            class="linea"
+            :x1="cX"
+            :y1="cY - radioPlanetas"
+            :x2="cX"
+            :y2="cY - radioSignos + 15"
+            :transform="rotaLinea(n)"
+          />
         </g>
         <g>
-          <line v-for="item in fasesLuna" class="linea2" :x1="cX" :y1="cY - radioPlanetas" :x2="cX"
-            :y2="cY - radioSignos + 15" :transform="rotaAngulo(item.angulo)" />
-          <text v-for="item in fasesLuna" class="fases" :x="cX" :y="cY - radioFechas - 20"
-            :transform="rotaAngulo(item.angulo)">
+          <line
+            v-for="item in fasesLuna"
+            class="linea2"
+            :x1="cX"
+            :y1="cY - radioPlanetas"
+            :x2="cX"
+            :y2="cY - radioSignos + 15"
+            :transform="rotaAngulo(item.angulo)"
+          />
+          <text
+            v-for="item in fasesLuna"
+            class="fases"
+            :x="cX"
+            :y="cY - radioFechas - 20"
+            :transform="rotaAngulo(item.angulo)"
+          >
             {{ item.fase }}
           </text>
         </g>
         <g>
-          <line v-for="item in treceLunas" class="linea" :x1="cX" :y1="cY - radioLunas" :x2="cX" :y2="cY - radioSignos"
-            :transform="rotaAngulo(item.angulo)" />
+          <line
+            v-for="item in treceLunas"
+            class="linea"
+            :x1="cX"
+            :y1="cY - radioLunas"
+            :x2="cX"
+            :y2="cY - radioSignos"
+            :transform="rotaAngulo(item.angulo)"
+          />
         </g>
         <g>
-          <line class="linea-hoy" :x1="cX" :y1="cY" :x2="cX" :y2="0" :transform="rotaAngulo(hoy)" />
-          <line class="linea-inicio" :x1="cX" :y1="cY" :x2="cX" :y2="0" :transform="rotaAngulo(inicio)" />
-          <line v-for="item in doceMeses" class="linea" :x1="cX" :y1="cY - radioExterno" :x2="cX"
-            :y2="cY - radioExterno - dim.borde" :transform="rotaAngulo(item.angulo)" />
+          <line
+            class="linea-hoy"
+            :x1="cX"
+            :y1="cY"
+            :x2="cX"
+            :y2="0"
+            :transform="rotaAngulo(hoy)"
+          />
+          <line
+            class="linea-inicio"
+            :x1="cX"
+            :y1="cY"
+            :x2="cX"
+            :y2="0"
+            :transform="rotaAngulo(inicio)"
+          />
+          <line
+            v-for="item in doceMeses"
+            class="linea"
+            :x1="cX"
+            :y1="cY - radioExterno"
+            :x2="cX"
+            :y2="cY - radioExterno - dim.borde"
+            :transform="rotaAngulo(item.angulo)"
+          />
         </g>
       </g>
     </svg>
@@ -93,84 +199,83 @@
 <script src="https://unpkg.com/vue@next"></script>
 
 <script>
-
-  Parse.serverURL = 'https://parseapi.back4app.com'; // This is your Server URL
+  Parse.serverURL = "https://parseapi.back4app.com"; // This is your Server URL
   Parse.initialize(
-    'U3qVQ5eByTF3SMvNlu73kNeEH85zYhjzD1Vwfc6Y', // This is your Application ID
-    'Wpj09eJV4XTot6Ketbivxm1m5JxaH4qhgFYM4oWI' // This is your Javascript key
+    "U3qVQ5eByTF3SMvNlu73kNeEH85zYhjzD1Vwfc6Y", // This is your Application ID
+    "Wpj09eJV4XTot6Ketbivxm1m5JxaH4qhgFYM4oWI" // This is your Javascript key
   );
 
   const locale = {
-    dateTime: '%x, %X',
-    date: '%d/%m/%Y',
-    time: '%-I:%M:%S %p',
-    periods: ['AM', 'PM'],
+    dateTime: "%x, %X",
+    date: "%d/%m/%Y",
+    time: "%-I:%M:%S %p",
+    periods: ["AM", "PM"],
     days: [
-      'domingo',
-      'lunes',
-      'martes',
-      'miércoles',
-      'jueves',
-      'viernes',
-      'sábado',
+      "domingo",
+      "lunes",
+      "martes",
+      "miércoles",
+      "jueves",
+      "viernes",
+      "sábado",
     ],
-    shortDays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    shortDays: ["D", "L", "M", "M", "J", "V", "S"],
     months: [
-      'enero',
-      'febrero',
-      'marzo',
-      'abril',
-      'mayo',
-      'junio',
-      'julio',
-      'agosto',
-      'septiembre',
-      'octubre',
-      'noviembre',
-      'diciembre',
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
     ],
     shortMonths: [
-      'Ene',
-      'Feb',
-      'Mar',
-      'Abr',
-      'May',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dic',
+      "Ene",
+      "Feb",
+      "Mar",
+      "Abr",
+      "May",
+      "Jun",
+      "Jul",
+      "Ago",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dic",
     ],
   };
   d3.timeFormatDefaultLocale(locale);
 
   const charSignos = {
-    ar: '♈︎',
-    ta: '♉︎',
-    ge: '♊︎',
-    ca: '♋︎',
-    le: '♌︎',
-    vi: '♍︎',
-    li: '♎︎',
-    es: '♏︎',
-    sa: '♐︎',
-    cp: '♑︎',
-    ac: '♒︎',
-    pi: '♓︎',
+    ar: "♈︎",
+    ta: "♉︎",
+    ge: "♊︎",
+    ca: "♋︎",
+    le: "♌︎",
+    vi: "♍︎",
+    li: "♎︎",
+    es: "♏︎",
+    sa: "♐︎",
+    cp: "♑︎",
+    ac: "♒︎",
+    pi: "♓︎",
   };
 
   const charPlanetas = {
-    s: '\u2609\uFE0E',
-    me: '\u263F\uFE0E',
-    ve: '\u2640\uFE0E',
-    ma: '\u2642\uFE0E',
-    ju: '\u2643\uFE0E',
-    sa: '\u2644\uFE0E',
-    ur: '\u2645\uFE0E',
-    ne: '\u2646\uFE0E',
-    pl: '\u2647\uFE0E',
+    s: "\u2609\uFE0E",
+    me: "\u263F\uFE0E",
+    ve: "\u2640\uFE0E",
+    ma: "\u2642\uFE0E",
+    ju: "\u2643\uFE0E",
+    sa: "\u2644\uFE0E",
+    ur: "\u2645\uFE0E",
+    ne: "\u2646\uFE0E",
+    pl: "\u2647\uFE0E",
   };
 
   const iniciosLunas = JSON.stringify([
@@ -206,6 +311,7 @@
     data() {
       return {
         luna: 1,
+        principio: 11,
         fechaCero: new Date(2018, 11, 21),
         direccion: 1,
         orientacion: 0,
@@ -226,7 +332,7 @@
           radioInterno: 60,
           textoFechas: 12,
         },
-      }
+      };
     },
     computed: {
       fechaInicio() {
@@ -245,7 +351,11 @@
         return this.dim.alto / 2;
       },
       radioExterno() {
-        return Math.min(this.dim.ancho, this.dim.alto) / 2 - this.dim.margen - this.dim.borde;
+        return (
+          Math.min(this.dim.ancho, this.dim.alto) / 2 -
+          this.dim.margen -
+          this.dim.borde
+        );
       },
       radioSignos() {
         return this.radioExterno - this.dim.signos;
@@ -261,20 +371,18 @@
       },
       curvaFechas() {
         const deltaX = Math.sin(Math.PI / this.dias);
-        const deltaY = Math.sin((90 - 180 / this.dias) * Math.PI / 180);
+        const deltaY = Math.sin(((90 - 180 / this.dias) * Math.PI) / 180);
         const radio =
           this.radioFechas + (this.dim.fechas - this.dim.textoFechas) / 1.5;
         return `M${this.cX - deltaX * radio},${this.cY - deltaY * radio}
-          A${radio},${radio} 0 0 1 ${this.cX + deltaX * radio},${this.cY -
-          deltaY * radio}`;
+          A${radio},${radio} 0 0 1 ${this.cX + deltaX * radio},${
+          this.cY - deltaY * radio
+        }`;
       },
       escala() {
         return d3
           .scaleTime()
-          .domain([
-            this.fechaInicio,
-            this.fechaFin,
-          ])
+          .domain([this.fechaInicio, this.fechaFin])
           .range([0, 360]);
       },
       hoy() {
@@ -284,44 +392,51 @@
         return this.escala(this.fechaInicio);
       },
       doceMeses() {
-        return d3.timeDay.range(this.fechaInicio, this.fechaFin).reduce((nuevo, item) => {
-          if (item.getDate() === 1) {
-            const angulo = this.escala(item.getTime());
-            if (0 <= angulo && angulo < 360) {
-              nuevo.push({
-                angulo,
-              });
+        return d3.timeDay
+          .range(this.fechaInicio, this.fechaFin)
+          .reduce((nuevo, item) => {
+            if (item.getDate() === 1) {
+              const angulo = this.escala(item.getTime());
+              if (0 <= angulo && angulo < 360) {
+                nuevo.push({
+                  angulo,
+                });
+              }
             }
-          }
-          return nuevo;
-        }, []);
+            return nuevo;
+          }, []);
       },
       treceLunas() {
-        return d3.timeDay.range(this.fechaInicio, this.fechaFin).reduce((nuevo, item) => {
-          if (iniciosLunas.indexOf(JSON.stringify([item.getDate(), item.getMonth()])) > -1) {
-            const angulo = this.escala(item.getTime());
-            if (0 <= angulo && angulo < 360) {
-              nuevo.push({
-                angulo,
-              });
+        return d3.timeDay
+          .range(this.fechaInicio, this.fechaFin)
+          .reduce((nuevo, item) => {
+            if (
+              iniciosLunas.indexOf(
+                JSON.stringify([item.getDate(), item.getMonth()])
+              ) > -1
+            ) {
+              const angulo = this.escala(item.getTime());
+              if (0 <= angulo && angulo < 360) {
+                nuevo.push({
+                  angulo,
+                });
+              }
             }
-          }
-          return nuevo;
-        }, []);
+            return nuevo;
+          }, []);
       },
       fasesLuna() {
         const chars = {
-          m: '🌗',
-          n: '🌑',
-          c: '🌓',
-          l: '🌕',
+          m: "🌗",
+          n: "🌑",
+          c: "🌓",
+          l: "🌕",
         };
         return this.fases.reduce((nuevo, item) => {
           const angulo = this.escala(item.timestamp);
           if (0 <= angulo && angulo < 360) {
             nuevo.push({
-              angulo:
-                this.escala(d3.timeDay.round(item.timestamp)),
+              angulo: this.escala(d3.timeDay.round(item.timestamp)),
               fase: chars[item.fase],
             });
           }
@@ -384,7 +499,11 @@
             nuevo.push({
               angulo:
                 this.escala(d3.timeDay.floor(item.timestamp)) + 180 / this.dias,
-              evento: charPlanetas[item.planeta] + '→' + charSignos[item.signo] + (Boolean(item.r) ? '\u211E' : ''),
+              evento:
+                charPlanetas[item.planeta] +
+                "→" +
+                charSignos[item.signo] +
+                (Boolean(item.r) ? "\u211E" : ""),
             });
           }
           return nuevo;
@@ -400,68 +519,76 @@
     },
     methods: {
       rotaLinea(n) {
-        return `rotate(${(n - 1) * (360 / this.dias) * this.direccion + this.orientacion} ${this.cX} ${this.cY})`;
+        return `rotate(${
+          (n - 1) * (360 / this.dias) * this.direccion +
+          parseInt(this.orientacion)
+        } ${this.cX} ${this.cY})`;
       },
       rotaTexto(n) {
-        return `rotate(${(n - 0.5) * (360 / this.dias) * this.direccion + this.orientacion} ${this.cX} ${this.cY})`;
+        return `rotate(${
+          (n - 0.5) * (360 / this.dias) * this.direccion +
+          parseInt(this.orientacion)
+        } ${this.cX} ${this.cY})`;
       },
       rotaAngulo(angulo) {
-        return `rotate(${angulo * this.direccion + this.orientacion} ${this.cX} ${this.cY})`;
+        return `rotate(${
+          angulo * this.direccion + parseInt(this.orientacion)
+        } ${this.cX} ${this.cY})`;
       },
       getFecha(n) {
         const fecha = d3.timeDay.offset(
           this.fechaInicio,
-          n - 1 + (this.luna - 1) * this.dias,
+          n - 1 + (this.luna - 1) * this.dias
         );
-        return d3.timeFormat('%a %d %b')(fecha);
+        return d3.timeFormat("%a %d %b")(fecha);
       },
       async getSignos() {
         const vm = this;
-        const signos = Parse.Object.extend('signos');
+        const signos = Parse.Object.extend("signos");
         const query = new Parse.Query(signos);
-        query.equalTo("planeta", 's');
-        query.greaterThanOrEqualTo('timestamp', this.fechaInicio.getTime());
-        query.lessThanOrEqualTo('timestamp', this.fechaFin.getTime());
-        query.ascending('timestamp');
+        query.equalTo("planeta", "s");
+        query.greaterThanOrEqualTo("timestamp", this.fechaInicio.getTime());
+        query.lessThanOrEqualTo("timestamp", this.fechaFin.getTime());
+        query.ascending("timestamp");
         const results = await query.find();
 
-        this.signos = results.map(obj => {
+        this.signos = results.map((obj) => {
           return {
-            timestamp: new Date(obj.get('timestamp')),
-            signo: obj.get('signo'),
-          }
+            timestamp: new Date(obj.get("timestamp")),
+            signo: obj.get("signo"),
+          };
         });
       },
       async getFases() {
         const vm = this;
-        const fases = Parse.Object.extend('fases');
+        const fases = Parse.Object.extend("fases");
         const query = new Parse.Query(fases);
-        query.greaterThanOrEqualTo('timestamp', this.fechaInicio.getTime());
-        query.lessThanOrEqualTo('timestamp', this.fechaFin.getTime());
-        query.ascending('timestamp');
+        query.greaterThanOrEqualTo("timestamp", this.fechaInicio.getTime());
+        query.lessThanOrEqualTo("timestamp", this.fechaFin.getTime());
+        query.ascending("timestamp");
         const results = await query.find();
 
-        this.fases = results.map(obj => {
+        this.fases = results.map((obj) => {
           return {
-            timestamp: new Date(obj.get('timestamp')),
-            fase: obj.get('fase'),
-          }
+            timestamp: new Date(obj.get("timestamp")),
+            fase: obj.get("fase"),
+          };
         });
       },
       async getEstaciones() {
         const vm = this;
-        const estaciones = Parse.Object.extend('estaciones');
+        const estaciones = Parse.Object.extend("estaciones");
         const query = new Parse.Query(estaciones);
-        query.greaterThanOrEqualTo('timestamp', this.fechaInicio.getTime());
-        query.lessThanOrEqualTo('timestamp', this.fechaFin.getTime());
-        query.ascending('timestamp');
+        query.greaterThanOrEqualTo("timestamp", this.fechaInicio.getTime());
+        query.lessThanOrEqualTo("timestamp", this.fechaFin.getTime());
+        query.ascending("timestamp");
         const results = await query.find();
 
-        this.estaciones = results.map(obj => {
+        this.estaciones = results.map((obj) => {
           return {
-            timestamp: new Date(obj.get('timestamp')),
-            estacion: obj.get('estacion'),
-          }
+            timestamp: new Date(obj.get("timestamp")),
+            estacion: obj.get("estacion"),
+          };
         });
       },
     },
@@ -469,9 +596,8 @@
       this.getSignos();
       this.getFases();
       this.getEstaciones();
-    }
+    },
   });
 
-  app.mount('#app')
-
+  app.mount("#app");
 </script>
