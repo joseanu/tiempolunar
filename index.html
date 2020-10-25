@@ -6,63 +6,76 @@
 </head>
 
 <div id="app">
-  <p>{{ this.fechaInicio }}</p>
-  <p>{{ this.fechaFin }}</p>
-  <p>{{ this.dias }}</p>
+  <div>
+    <div>
+      <p>
+        <input type="radio" id="derecha" value="1" v-model="direccion" />
+        <label for="derecha">⇨</label>
+        <input type="radio" id="izquierda" value="-1" v-model="direccion" />
+        <label for="izquierda">⇦</label>
+      </p>
+      <p><input type="range" min="1" max="33" step="1" v-model="luna" />{{ luna }}</p>
+    </div>
+    <div>
+      <p>{{ this.fechaInicio }}</p>
+      <p>{{ this.fechaFin }}</p>
+      <p>{{ this.dias }}</p>
+    </div>
 
-  <input type="range" min="1" max="33" step="1" v-model="luna" />{{ luna }}
+  </div>
+  <div>
+    <svg :width="dim.ancho / 2" :height="dim.alto / 2" viewBox="0 0 1285 1285" xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
 
-  <svg :width="dim.ancho / 2" :height="dim.alto / 2" viewBox="0 0 1285 1285" xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink">
-
-    <defs>
-      <path id="curvaFechas" :d="curvaFechas" />
-    </defs>
-    <g>
+      <defs>
+        <path id="curvaFechas" :d="curvaFechas" />
+      </defs>
       <g>
-        <circle class="circulo2" :cx="cX" :cy="cY" :r="radioExterno + dim.borde" />
-        <circle class="circulo2" :cx="cX" :cy="cY" :r="radioExterno" />
-        <circle class="circulo2" :cx="cX" :cy="cY" :r="radioSignos" />
-        <circle class="circulo" :cx="cX" :cy="cY" :r="radioPlanetas" />
-        <circle class="circulo" :cx="cX" :cy="cY" :r="radioFechas" />
-        <circle class="circulo2" :cx="cX" :cy="cY" :r="radioLunas" />
+        <g>
+          <circle class="circulo2" :cx="cX" :cy="cY" :r="radioExterno + dim.borde" />
+          <circle class="circulo2" :cx="cX" :cy="cY" :r="radioExterno" />
+          <circle class="circulo2" :cx="cX" :cy="cY" :r="radioSignos" />
+          <circle class="circulo" :cx="cX" :cy="cY" :r="radioPlanetas" />
+          <circle class="circulo" :cx="cX" :cy="cY" :r="radioFechas" />
+          <circle class="circulo2" :cx="cX" :cy="cY" :r="radioLunas" />
+        </g>
+        <g>
+          <line v-for="item in yule" class="linea2" :x1="cX" :y1="cY" :x2="cX" :y2="0"
+            :transform="rotaAngulo(item.angulo)" />
+        </g>
+        <g>
+          <line v-for="item in ingresos" class="linea" :x1="cX" :y1="cY - radioSignos" :x2="cX" :y2="cY - radioExterno"
+            :transform="rotaAngulo(item.angulo)" />
+          <text v-for="item in ingreSignos" class="signos" :x="cX"
+            :y="cY - radioSignos - (radioExterno - radioSignos) / 2" :transform="rotaAngulo(item.angulo)">
+            {{ item.signo }}
+          </text>
+        </g>
+        <g>
+          <line v-for="n in dias" class="linea" :x1="cX" :y1="cY - radioPlanetas" :x2="cX" :y2="cY - radioSignos + 15"
+            :transform="rotaLinea(n)" />
+        </g>
+        <g>
+          <line v-for="item in fasesLuna" class="linea2" :x1="cX" :y1="cY - radioPlanetas" :x2="cX"
+            :y2="cY - radioSignos + 15" :transform="rotaAngulo(item.angulo)" />
+          <text v-for="item in fasesLuna" class="fases" :x="cX" :y="cY - radioFechas - 20"
+            :transform="rotaAngulo(item.angulo)">
+            {{ item.fase }}
+          </text>
+        </g>
+        <g>
+          <line v-for="item in treceLunas" class="linea" :x1="cX" :y1="cY - radioLunas" :x2="cX" :y2="cY - radioSignos"
+            :transform="rotaAngulo(item.angulo)" />
+        </g>
+        <g>
+          <line class="linea-hoy" :x1="cX" :y1="cY" :x2="cX" :y2="0" :transform="rotaAngulo(hoy)" />
+          <line class="linea-inicio" :x1="cX" :y1="cY" :x2="cX" :y2="0" :transform="rotaAngulo(inicio)" />
+          <line v-for="item in doceMeses" class="linea" :x1="cX" :y1="cY - radioExterno" :x2="cX"
+            :y2="cY - radioExterno - dim.borde" :transform="rotaAngulo(item.angulo)" />
+        </g>
       </g>
-      <g>
-        <line v-for="item in yule" class="linea2" :x1="cX" :y1="cY" :x2="cX" :y2="0"
-          :transform="rotaAngulo(item.angulo)" />
-      </g>
-      <g>
-        <line v-for="item in ingresos" class="linea" :x1="cX" :y1="cY - radioSignos" :x2="cX" :y2="cY - radioExterno"
-          :transform="rotaAngulo(item.angulo)" />
-        <text v-for="item in ingreSignos" class="signos" :x="cX"
-          :y="cY - radioSignos - (radioExterno - radioSignos) / 2" :transform="rotaAngulo(item.angulo)">
-          {{ item.signo }}
-        </text>
-      </g>
-      <g>
-        <line v-for="n in dias" class="linea" :x1="cX" :y1="cY - radioPlanetas" :x2="cX" :y2="cY - radioSignos + 15"
-          :transform="rotaLinea(n)" />
-      </g>
-      <g>
-        <line v-for="item in fasesLuna" class="linea2" :x1="cX" :y1="cY - radioPlanetas" :x2="cX"
-          :y2="cY - radioSignos + 15" :transform="rotaAngulo(item.angulo)" />
-        <text v-for="item in fasesLuna" class="fases" :x="cX" :y="cY - radioFechas - 20"
-          :transform="rotaAngulo(item.angulo)">
-          {{ item.fase }}
-        </text>
-      </g>
-      <g>
-        <line v-for="item in treceLunas" class="linea" :x1="cX" :y1="cY - radioLunas" :x2="cX" :y2="cY - radioSignos"
-          :transform="rotaAngulo(item.angulo)" />
-      </g>
-      <g>
-        <line class="linea-hoy" :x1="cX" :y1="cY" :x2="cX" :y2="0" :transform="rotaAngulo(hoy)" />
-        <line v-for="item in doceMeses" class="linea" :x1="cX" :y1="cY - radioExterno" :x2="cX"
-          :y2="cY - radioExterno - dim.borde" :transform="rotaAngulo(item.angulo)" />
-      </g>
-    </g>
-  </svg>
-
+    </svg>
+  </div>
 </div>
 
 <script src="https://d3js.org/d3.v5.js"></script>
@@ -184,6 +197,7 @@
       return {
         luna: 1,
         fechaCero: new Date(2018, 11, 21),
+        direccion: 1,
         signos: [],
         fases: [],
         estaciones: [],
@@ -254,6 +268,9 @@
       },
       hoy() {
         return this.escala(Date.now());
+      },
+      inicio() {
+        return this.escala(this.fechaInicio);
       },
       doceMeses() {
         return d3.timeDay.range(this.fechaInicio, this.fechaFin).reduce((nuevo, item) => {
@@ -372,13 +389,13 @@
     },
     methods: {
       rotaLinea(n) {
-        return `rotate(${(n - 1) * (360 / this.dias)} ${this.cX} ${this.cY})`;
+        return `rotate(${(n - 1) * (360 / this.dias) * this.direccion} ${this.cX} ${this.cY})`;
       },
       rotaTexto(n) {
-        return `rotate(${(n - 0.5) * (360 / this.dias)} ${this.cX} ${this.cY})`;
+        return `rotate(${(n - 0.5) * (360 / this.dias) * this.direccion} ${this.cX} ${this.cY})`;
       },
       rotaAngulo(angulo) {
-        return `rotate(${angulo} ${this.cX} ${this.cY})`;
+        return `rotate(${angulo * this.direccion} ${this.cX} ${this.cY})`;
       },
       getFecha(n) {
         const fecha = d3.timeDay.offset(
