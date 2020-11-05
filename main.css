@@ -19,24 +19,24 @@ svg {
 
 .circulo {
   fill: none;
-  stroke: black;
+  stroke: rgb(218, 183, 93);
   stroke-width: 1;
 }
 
 .circulo2 {
   fill: none;
-  stroke: black;
+  stroke: rgb(218, 183, 93);
   stroke-width: 2;
 }
 
 .linea {
   fill: none;
-  stroke: black;
+  stroke: rgb(218, 183, 93);
 }
 
 .linea2 {
   fill: none;
-  stroke: black;
+  stroke: rgb(218, 183, 93);
   stroke-width: 2;
 }
 
