@@ -20,13 +20,13 @@ svg {
 .circulo {
   fill: none;
   stroke: rgb(218, 183, 93);
-  stroke-width: 1;
+  stroke-width: 1px;
 }
 
 .circulo2 {
   fill: none;
   stroke: rgb(218, 183, 93);
-  stroke-width: 2;
+  stroke-width: 2px;
 }
 
 .linea {
@@ -37,19 +37,19 @@ svg {
 .linea2 {
   fill: none;
   stroke: rgb(218, 183, 93);
-  stroke-width: 2;
+  stroke-width: 2px;
 }
 
 .linea-hoy {
   fill: none;
   stroke: red;
-  stroke-width: 3;
+  stroke-width: 3px;
 }
 
 .linea-inicio {
   fill: none;
   stroke: greenyellow;
-  stroke-width: 3;
+  stroke-width: 3px;
 }
 
 text {
